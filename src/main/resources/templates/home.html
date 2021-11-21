@@ -1,0 +1,39 @@
+<html>
+    <header>
+        <title>Обмен данными</title>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+        </script>
+    </header>
+    <body>
+        <script>
+        function doAjax() {
+        $.ajax({
+        type: 'GET',
+        url: 'zarrifoodget',
+        success: function(data){
+        document.writeln ('<table border = "1px">');
+            document.writeln ('<tr>' +
+                '<td>№ п/п </td>' +
+                '<td>Изготовитель</td>' +
+                '<td>Наименование</td>' +
+                '<td>Размер порции</td>' +
+                '</tr>');
+            let e = 1;
+            for (let i = 0; i < data.length; i++) {
+            let contentTable = '<tr>' +
+                '<td>' + e + '</td>' +
+                '<td>' + data[i].manufacturer + '</td>' +
+                '<td>' + data[i].namefood + '</td>' +
+                '<td>' + data[i].servingsize + '</td>' +
+                '</tr>';
+            document.writeln(contentTable);
+            e++;
+            }
+            document.writeln ('</table>');
+        }
+        });
+        }
+        </script>
+        <input type="button" value="OK" onclick="doAjax()">
+    </body>
+</html>
