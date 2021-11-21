@@ -31,7 +31,7 @@ public class ZarriFoodController {
 
     @Transactional
     @GetMapping("/zarrifooddelete")
-    public void zarriFoodDelete(@RequestParam Long idZarrifood){
-        zarriFoodRepo.deleteById(idZarrifood);
+    public void zarriFoodDelete(@RequestParam Long idZarriFood){
+        zarriFoodRepo.deleteById(idZarriFood);
     }
 }

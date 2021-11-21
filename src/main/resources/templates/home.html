@@ -7,34 +7,78 @@
     <body>
     <p>Пробуем закомитить в гит</p>
         <script>
-        function doAjax() {
-        $.ajax({
-        type: 'GET',
-        url: 'zarrifoodget',
-        success: function(data){
-        document.writeln ('<table border = "1px">');
-            document.writeln ('<tr>' +
-                '<td>№ п/п </td>' +
-                '<td>Изготовитель</td>' +
-                '<td>Наименование</td>' +
-                '<td>Размер порции</td>' +
-                '</tr>');
-            let e = 1;
-            for (let i = 0; i < data.length; i++) {
-            let contentTable = '<tr>' +
-                '<td>' + e + '</td>' +
-                '<td>' + data[i].manufacturer + '</td>' +
-                '<td>' + data[i].namefood + '</td>' +
-                '<td>' + data[i].servingsize + '</td>' +
-                '</tr>';
-            document.writeln(contentTable);
-            e++;
+            function doAjax() {
+                $.ajax({
+                type: 'GET',
+                url: 'zarrifoodget',
+                success: function(data){
+                let tableContentZarriFood = '<table border = "1px">';
+                tableContentZarriFood += '<tr>' +
+                        '<td>№ п/п </td>' +
+                        '<td>Изготовитель</td>' +
+                        '<td>Наименование</td>' +
+                        '<td>Размер порции</td>' +
+                        '<td>Удалить</td>' +
+                        '</tr>';
+                    let e = 1;
+                    for (let i = 0; i < data.length; i++) {
+                        tableContentZarriFood += '<tr>' +
+                            '<td>' + e + '</td>' +
+                            '<td>' + data[i].manufacturer + '</td>' +
+                            '<td>' + data[i].namefood + '</td>' +
+                            '<td>' + data[i].servingsize + '</td>' +
+                            '<td><input type="button" value="Удалить" onclick="deleteZarriFood(' + data[i].id + ')"></td>' +
+                            '</tr>';
+                        e++;
+                    }
+                    tableContentZarriFood += '</table>';
+                    document.getElementById('spanTableZarriFoodID').innerHTML = tableContentZarriFood;
+                }
+                });
             }
-            document.writeln ('</table>');
-        }
-        });
-        }
+
+            function deleteZarriFood(id){
+                $.ajax({
+                    type: 'GET',
+                    url: 'zarrifooddelete',
+                    data: {
+                        idZarriFood: id
+                    },
+                    success: function(data){
+                        doAjax();
+                    }
+                });
+            }
+            function addZarriFood(){
+                var manufacturer = document.getElementsByName('manufacturer')[0].value;
+                var namefood = document.getElementsByName('namefood')[0].value;
+                var servingsize = document.getElementsByName('servingsize')[0].value;
+                console.log(manufacturer);
+                console.log(namefood);
+                console.log(servingsize);
+                $.ajax({
+                    type: 'POST',
+                    url: 'zarrifoodadd',
+                    data: {
+                        manufacturer: manufacturer,
+                        namefood: namefood,
+                        servingsize: servingsize
+                    },
+                    success: function(data){
+                        doAjax();
+                    }
+                });
+            }
         </script>
+
+        <span id="spanTableZarriFoodID"></span>
+
         <input type="button" value="OK" onclick="doAjax()">
+            <p> <b> Добавить новый рацион </b></p>
+        <input type = "text" name="manufacturer">
+        <input type = "text" name="namefood">
+        <input type = "text" name="servingsize">
+        <input type="button" value="OK" onclick="addZarriFood()">
+
     </body>
 </html>
